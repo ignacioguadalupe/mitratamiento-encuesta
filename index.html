@@ -1,0 +1,1409 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>MiTratamiento | Encuesta de relevamiento</title>
+
+  <style>
+    :root {
+      --primary: #176b87;
+      --primary-dark: #10536a;
+      --primary-light: #eaf5f8;
+      --secondary: #45a29e;
+      --background: #f4f8fa;
+      --surface: #ffffff;
+      --text: #24343b;
+      --text-soft: #66777e;
+      --border: #dce7eb;
+      --success: #2d8a68;
+      --shadow: 0 10px 30px rgba(24, 70, 85, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(
+          180deg,
+          #eaf5f8 0,
+          #f4f8fa 270px,
+          #f4f8fa 100%
+        );
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .page {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 46px 0 70px;
+    }
+
+    /* ==============================
+       ENCABEZADO
+    ============================== */
+
+    .header {
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 7px 18px rgba(23, 107, 135, 0.22);
+    }
+
+    .brand-name {
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: -0.3px;
+    }
+
+    .brand-name span {
+      color: var(--secondary);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      color: #19333d;
+      font-size: clamp(30px, 5vw, 46px);
+      line-height: 1.08;
+      letter-spacing: -1.4px;
+    }
+
+    .intro {
+      max-width: 720px;
+      margin: 17px 0 0;
+      color: var(--text-soft);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .info-box {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-top: 24px;
+      padding: 16px 18px;
+      border: 1px solid #cfe4e9;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #50666e;
+      font-size: 14px;
+    }
+
+    .info-icon {
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    /* ==============================
+       PROGRESO
+    ============================== */
+
+    .progress-container {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      margin-bottom: 24px;
+      padding: 15px 18px;
+      border: 1px solid rgba(220, 231, 235, 0.9);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 22px rgba(24, 70, 85, 0.07);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 9px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .progress-label {
+      color: var(--text);
+    }
+
+    .progress-value {
+      color: var(--primary);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: #e8eff2;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(
+        90deg,
+        var(--primary),
+        var(--secondary)
+      );
+      transition: width 0.25s ease;
+    }
+
+    /* ==============================
+       FORMULARIO
+    ============================== */
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .question {
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .question-heading {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .question-number {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .question-title {
+      margin: 3px 0 0;
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 700;
+      color: #273e47;
+    }
+
+    .question-help {
+      margin: 7px 0 0;
+      color: var(--text-soft);
+      font-size: 14px;
+    }
+
+    .required {
+      color: #bd4558;
+    }
+
+    /* ==============================
+       OPCIONES
+    ============================== */
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .option-content {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+      padding: 15px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      transition:
+        border-color 0.18s ease,
+        background 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .option:hover .option-content {
+      border-color: #9bc8d2;
+      background: #fbfdfe;
+      transform: translateY(-1px);
+    }
+
+    .radio-marker {
+      position: relative;
+      flex: 0 0 20px;
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+      border: 2px solid #b6c7cd;
+      border-radius: 50%;
+      background: white;
+      transition: all 0.18s ease;
+    }
+
+    .radio-marker::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: white;
+      transform: scale(0);
+      transition: transform 0.18s ease;
+    }
+
+    .option input:checked + .option-content {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(23, 107, 135, 0.06);
+    }
+
+    .option input:checked + .option-content .radio-marker {
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    .option input:checked + .option-content .radio-marker::after {
+      transform: scale(1);
+    }
+
+    .option input:focus-visible + .option-content {
+      outline: 3px solid rgba(23, 107, 135, 0.18);
+      outline-offset: 2px;
+    }
+
+    .option-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .option-title {
+      color: #314850;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .option-description {
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ==============================
+       TEXTAREAS
+    ============================== */
+
+    textarea {
+      width: 100%;
+      min-height: 132px;
+      resize: vertical;
+      padding: 15px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      background: #fbfdfe;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      line-height: 1.55;
+      transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+    }
+
+    textarea::placeholder {
+      color: #98a6ab;
+    }
+
+    textarea:hover {
+      border-color: #bdd1d7;
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(23, 107, 135, 0.09);
+    }
+
+    .character-count {
+      margin-top: 8px;
+      text-align: right;
+      color: #89989e;
+      font-size: 12px;
+    }
+
+    /* ==============================
+       PREGUNTA CONDICIONAL
+    ============================== */
+
+    .conditional-field {
+      display: none;
+      margin-top: 16px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .conditional-field.visible {
+      display: block;
+    }
+
+    .conditional-label {
+      display: block;
+      margin-bottom: 10px;
+      color: #314850;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    /* ==============================
+       ENVÍO
+    ============================== */
+
+    .submit-section {
+      margin-top: 4px;
+      padding: 27px;
+      border-radius: var(--radius);
+      background: #173f4e;
+      color: white;
+      box-shadow: 0 12px 32px rgba(17, 62, 78, 0.17);
+    }
+
+    .submit-section h2 {
+      margin: 0 0 7px;
+      font-size: 21px;
+    }
+
+    .submit-section p {
+      margin: 0 0 20px;
+      max-width: 650px;
+      color: #d8e8ed;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .submit-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 24px;
+      border: none;
+      border-radius: 11px;
+      background: white;
+      color: var(--primary-dark);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 7px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .success-message {
+      display: none;
+      margin-top: 20px;
+      padding: 17px 18px;
+      border: 1px solid #9dd4bf;
+      border-radius: 12px;
+      background: #eaf8f2;
+      color: #256a51;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    footer {
+      padding-top: 28px;
+      text-align: center;
+      color: #819096;
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100% - 22px, 920px);
+        padding-top: 25px;
+      }
+
+      .header {
+        padding: 0 5px;
+      }
+
+      .question {
+        padding: 21px 17px;
+      }
+
+      .question-title {
+        font-size: 16px;
+      }
+
+      .progress-container {
+        top: 8px;
+      }
+
+      .submit-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <header class="header">
+
+    <div class="brand">
+      <div class="brand-icon">+</div>
+
+      <div class="brand-name">
+        Mi<span>Tratamiento</span>
+      </div>
+    </div>
+
+    <p class="eyebrow">Relevamiento de necesidades</p>
+
+    <h1>
+      Tu experiencia nos ayuda a diseñar una mejor solución
+    </h1>
+
+    <p class="intro">
+      Queremos comprender cómo las personas se relacionan con las recetas,
+      la información y la gestión de medicamentos. Tus respuestas nos
+      ayudarán a identificar necesidades, dificultades y oportunidades de mejora.
+    </p>
+
+    <div class="info-box">
+      <div class="info-icon">ⓘ</div>
+
+      <div>
+        La encuesta contiene <strong>8 preguntas</strong>.
+        No existen respuestas correctas o incorrectas: nos interesa conocer
+        tu experiencia y percepción actual.
+      </div>
+    </div>
+
+  </header>
+
+
+  <div class="progress-container">
+
+    <div class="progress-header">
+      <span class="progress-label">Progreso de la encuesta</span>
+      <span class="progress-value" id="progressValue">0 de 8</span>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+  </div>
+
+
+  <form id="surveyForm">
+
+    <!-- PREGUNTA 1 -->
+    <section class="question" data-question="1">
+
+      <div class="question-heading">
+        <div class="question-number">01</div>
+
+        <div>
+          <h2 class="question-title">
+            ¿Cuál de las siguientes opciones describe mejor tu relación
+            con la prescripción, dispensación o uso de medicamentos?
+            <span class="required">*</span>
+          </h2>
+
+          <p class="question-help">
+            Seleccioná la opción que mejor represente tu rol principal.
+          </p>
+        </div>
+      </div>
+
+      <div class="options">
+
+        <label class="option">
+          <input type="radio" name="rol" value="Personal de salud" required>
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Personal de salud</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="rol" value="Personal de farmacia">
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Personal de farmacia</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="rol" value="Administrativo o gestor">
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Administrativo / Gestor</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="rol" value="Paciente">
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Paciente</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="rol" value="Familiar o cuidador">
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Familiar / Cuidador de un paciente</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="rol" value="Otro">
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Otro</span>
+            </span>
+          </span>
+        </label>
+
+      </div>
+
+    </section>
+
+
+    <!-- PREGUNTA 2 -->
+    <section class="question" data-question="2">
+
+      <div class="question-heading">
+        <div class="question-number">02</div>
+
+        <div>
+          <h2 class="question-title">
+            ¿Con qué frecuencia te relacionás con recetas de medicamentos?
+            <span class="required">*</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="options">
+
+        <label class="option">
+          <input
+            type="radio"
+            name="frecuencia"
+            value="Todos los días"
+            required
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">Todos los días</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="frecuencia"
+            value="Algunas veces por semana"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">Algunas veces por semana</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="frecuencia"
+            value="Algunas veces por mes"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">Algunas veces por mes</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="frecuencia"
+            value="Con menor frecuencia"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">Con menor frecuencia</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="frecuencia"
+            value="Nunca o casi nunca"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">Nunca o casi nunca</span>
+            </span>
+          </span>
+        </label>
+
+      </div>
+
+    </section>
+
+
+    <!-- PREGUNTA 3 -->
+    <section class="question" data-question="3">
+
+      <div class="question-heading">
+        <div class="question-number">03</div>
+
+        <div>
+          <h2 class="question-title">
+            ¿Qué información sobre los medicamentos necesitás tener disponible?
+            <span class="required">*</span>
+          </h2>
+
+          <p class="question-help">
+            Mencioná toda la información que consideres relevante.
+          </p>
+        </div>
+      </div>
+
+      <textarea
+        name="informacion_necesaria"
+        maxlength="800"
+        required
+        placeholder="Escribí tu respuesta aquí..."
+      ></textarea>
+
+      <div class="character-count">
+        <span>0</span> / 800
+      </div>
+
+    </section>
+
+
+    <!-- PREGUNTA 4 -->
+    <section class="question" data-question="4">
+
+      <div class="question-heading">
+        <div class="question-number">04</div>
+
+        <div>
+          <h2 class="question-title">
+            ¿Cuál es el tiempo máximo de espera que considerás aceptable
+            para acceder a esa información?
+            <span class="required">*</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="options">
+
+        <label class="option">
+          <input
+            type="radio"
+            name="tiempo_espera"
+            value="Hasta 1 minuto"
+            required
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">Hasta 1 minuto</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="tiempo_espera"
+            value="Más de 1 y hasta 5 minutos"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">
+                Más de 1 y hasta 5 minutos
+              </span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="tiempo_espera"
+            value="Más de 5 y hasta 10 minutos"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">
+                Más de 5 y hasta 10 minutos
+              </span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="tiempo_espera"
+            value="Más de 10 minutos"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">Más de 10 minutos</span>
+            </span>
+          </span>
+        </label>
+
+      </div>
+
+    </section>
+
+
+    <!-- PREGUNTA 5 -->
+    <section class="question" data-question="5">
+
+      <div class="question-heading">
+        <div class="question-number">05</div>
+
+        <div>
+          <h2 class="question-title">
+            Si no recibieras esa información dentro de ese período,
+            ¿qué impacto tendría?
+            <span class="required">*</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="options">
+
+        <label class="option">
+          <input
+            type="radio"
+            name="impacto"
+            value="Alto"
+            required
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Alto</span>
+
+              <span class="option-description">
+                Podría impedir completar correctamente la tarea o generar
+                consecuencias importantes.
+              </span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="impacto"
+            value="Medio"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Medio</span>
+
+              <span class="option-description">
+                Generaría demoras o dificultades, pero permitiría continuar
+                posteriormente.
+              </span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="impacto"
+            value="Bajo"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Bajo</span>
+
+              <span class="option-description">
+                Generaría una dificultad menor.
+              </span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="impacto"
+            value="Ninguno"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">Ninguno</span>
+
+              <span class="option-description">
+                No tendría consecuencias relevantes.
+              </span>
+            </span>
+          </span>
+        </label>
+
+      </div>
+
+    </section>
+
+
+    <!-- PREGUNTA 6 -->
+    <section class="question" data-question="6">
+
+      <div class="question-heading">
+        <div class="question-number">06</div>
+
+        <div>
+          <h2 class="question-title">
+            ¿Encontrás actualmente alguna dificultad al consultar,
+            prescribir, gestionar, dispensar o utilizar medicamentos?
+            <span class="required">*</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="options">
+
+        <label class="option">
+          <input
+            type="radio"
+            name="tiene_dificultades"
+            value="Sí"
+            required
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">Sí</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="tiene_dificultades"
+            value="No"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+            <span class="option-text">
+              <span class="option-title">No</span>
+            </span>
+          </span>
+        </label>
+
+      </div>
+
+      <div class="conditional-field" id="difficultyDetails">
+
+        <label
+          class="conditional-label"
+          for="dificultades"
+        >
+          ¿Cuál o cuáles?
+        </label>
+
+        <textarea
+          id="dificultades"
+          name="dificultades"
+          maxlength="800"
+          placeholder="Describí las dificultades que encontrás actualmente..."
+        ></textarea>
+
+        <div class="character-count">
+          <span>0</span> / 800
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PREGUNTA 7 -->
+    <section class="question" data-question="7">
+
+      <div class="question-heading">
+        <div class="question-number">07</div>
+
+        <div>
+          <h2 class="question-title">
+            Cuando aparece una nueva herramienta digital que podría
+            facilitarte una tarea, ¿cuál de las siguientes opciones
+            te representa mejor?
+            <span class="required">*</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="options">
+
+        <label class="option">
+          <input
+            type="radio"
+            name="adopcion_tecnologia"
+            value="Adopción temprana"
+            required
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">
+                Suelo probarla rápidamente
+              </span>
+
+              <span class="option-description">
+                Incluso si todavía es relativamente nueva.
+              </span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="adopcion_tecnologia"
+            value="Adopción intermedia"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">
+                Prefiero utilizarla cuando ya fue probada
+              </span>
+
+              <span class="option-description">
+                Me resulta más cómodo incorporarla cuando otras personas
+                ya la utilizaron y conozco mejor su funcionamiento.
+              </span>
+            </span>
+          </span>
+        </label>
+
+        <label class="option">
+          <input
+            type="radio"
+            name="adopcion_tecnologia"
+            value="Adopción tardía"
+          >
+
+          <span class="option-content">
+            <span class="radio-marker"></span>
+
+            <span class="option-text">
+              <span class="option-title">
+                Prefiero mantener las herramientas que ya utilizo
+              </span>
+
+              <span class="option-description">
+                Suelo incorporar una nueva alternativa cuando está ampliamente
+                consolidada.
+              </span>
+            </span>
+          </span>
+        </label>
+
+      </div>
+
+    </section>
+
+
+    <!-- PREGUNTA 8 -->
+    <section class="question" data-question="8">
+
+      <div class="question-heading">
+        <div class="question-number">08</div>
+
+        <div>
+          <h2 class="question-title">
+            ¿Hay algún aspecto, necesidad, dificultad o situación relacionada
+            con las recetas, los medicamentos o su gestión que no hayamos
+            contemplado y consideres importante agregar?
+          </h2>
+
+          <p class="question-help">
+            Esta pregunta es opcional.
+          </p>
+        </div>
+      </div>
+
+      <textarea
+        name="comentarios_adicionales"
+        maxlength="1000"
+        placeholder="Podés agregar cualquier comentario que consideres relevante..."
+      ></textarea>
+
+      <div class="character-count">
+        <span>0</span> / 1000
+      </div>
+
+    </section>
+
+
+    <!-- ENVÍO -->
+    <section class="submit-section">
+
+      <h2>Gracias por compartir tu experiencia</h2>
+
+      <p>
+        Antes de finalizar, revisá que tus respuestas representen tu
+        experiencia habitual. La información obtenida será utilizada para
+        comprender mejor las necesidades de los usuarios de MiTratamiento.
+      </p>
+
+      <button class="submit-button" type="submit">
+        Enviar respuestas
+        <span aria-hidden="true">→</span>
+      </button>
+
+      <div
+        class="success-message"
+        id="successMessage"
+        role="status"
+        aria-live="polite"
+      >
+        ✓ Tus respuestas han sido completadas correctamente.
+      </div>
+
+    </section>
+
+  </form>
+
+
+  <footer>
+    MiTratamiento · Relevamiento de requisitos y necesidades de usuarios
+  </footer>
+
+</main>
+
+
+<script>
+  const form = document.getElementById("surveyForm");
+  const questions = document.querySelectorAll(".question");
+  const progressBar = document.getElementById("progressBar");
+  const progressValue = document.getElementById("progressValue");
+  const successMessage = document.getElementById("successMessage");
+
+  const difficultyRadios =
+    document.querySelectorAll('input[name="tiene_dificultades"]');
+
+  const difficultyDetails =
+    document.getElementById("difficultyDetails");
+
+  const difficultyTextarea =
+    document.getElementById("dificultades");
+
+
+  function questionAnswered(question) {
+
+    const questionNumber =
+      question.getAttribute("data-question");
+
+    const radios =
+      question.querySelectorAll('input[type="radio"]');
+
+    const textarea =
+      question.querySelector("textarea");
+
+
+    if (questionNumber === "6") {
+
+      const selected =
+        question.querySelector(
+          'input[name="tiene_dificultades"]:checked'
+        );
+
+      if (!selected) {
+        return false;
+      }
+
+      if (selected.value === "Sí") {
+        return difficultyTextarea.value.trim().length > 0;
+      }
+
+      return true;
+    }
+
+
+    if (radios.length > 0) {
+      return [...radios].some(radio => radio.checked);
+    }
+
+
+    if (textarea) {
+      return textarea.value.trim().length > 0;
+    }
+
+
+    return false;
+  }
+
+
+  function updateProgress() {
+
+    let completed = 0;
+
+    questions.forEach(question => {
+      if (questionAnswered(question)) {
+        completed++;
+      }
+    });
+
+    const percentage =
+      (completed / questions.length) * 100;
+
+    progressBar.style.width =
+      percentage + "%";
+
+    progressValue.textContent =
+      completed + " de " + questions.length;
+  }
+
+
+  document
+    .querySelectorAll("textarea")
+    .forEach(textarea => {
+
+      const parent =
+        textarea.parentElement;
+
+      const counter =
+        parent.querySelector(".character-count span");
+
+      textarea.addEventListener("input", () => {
+
+        if (counter) {
+          counter.textContent =
+            textarea.value.length;
+        }
+
+        updateProgress();
+      });
+
+    });
+
+
+  document
+    .querySelectorAll('input[type="radio"]')
+    .forEach(input => {
+
+      input.addEventListener(
+        "change",
+        updateProgress
+      );
+
+    });
+
+
+  difficultyRadios.forEach(radio => {
+
+    radio.addEventListener("change", () => {
+
+      if (radio.checked && radio.value === "Sí") {
+
+        difficultyDetails.classList.add("visible");
+
+        difficultyTextarea.required = true;
+
+      } else if (
+        radio.checked &&
+        radio.value === "No"
+      ) {
+
+        difficultyDetails.classList.remove("visible");
+
+        difficultyTextarea.required = false;
+
+        difficultyTextarea.value = "";
+
+        const counter =
+          difficultyDetails.querySelector(
+            ".character-count span"
+          );
+
+        if (counter) {
+          counter.textContent = "0";
+        }
+      }
+
+      updateProgress();
+    });
+
+  });
+
+
+  form.addEventListener(
+    "submit",
+    function(event) {
+
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      successMessage.style.display =
+        "block";
+
+      successMessage.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }
+  );
+
+
+  updateProgress();
+</script>
+
+</body>
+</html>
